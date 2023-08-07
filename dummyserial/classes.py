@@ -22,7 +22,7 @@ class Serial():
     Dummy (mock) serial port for testing purposes.
 
     Mimics the behavior of a serial port as defined by the
-    `pySerial <http://pyserial.sourceforge.net/>`_ module.
+    `pySerial <https://github.com/pyserial/pyserial>`_ module.
 
     Args:
         * port:
