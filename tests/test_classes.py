@@ -95,12 +95,12 @@ class DummySerialTest(unittest.TestCase):  # pylint: disable=R0904
             ds_responses={rand_write_str1: rand_write_str2}
         )
 
-        self.assertTrue(ds_instance._isOpen)  # pylint: disable=W0212
+        self.assertTrue(ds_instance.is_open)  # pylint: disable=W0212
         ds_instance.close()
-        self.assertFalse(ds_instance._isOpen)  # pylint: disable=W0212
+        self.assertFalse(ds_instance.is_open)  # pylint: disable=W0212
         with self.assertRaises(SerialException):
             ds_instance.write(rand_write_str1)
-        self.assertFalse(ds_instance._isOpen)  # pylint: disable=W0212
+        self.assertFalse(ds_instance.is_open)  # pylint: disable=W0212
 
     def test_write_and_read_to_closed_port(self):
         """Tests writing-to and reading-from a closed Dummy Serial port."""
@@ -115,13 +115,13 @@ class DummySerialTest(unittest.TestCase):  # pylint: disable=R0904
             ds_responses={rand_write_str1: rand_write_str2}
         )
 
-        self.assertTrue(ds_instance._isOpen)  # pylint: disable=W0212
+        self.assertTrue(ds_instance.is_open)  # pylint: disable=W0212
         ds_instance.write(str.encode(rand_write_str1))
         ds_instance.close()
-        self.assertFalse(ds_instance._isOpen)  # pylint: disable=W0212
+        self.assertFalse(ds_instance.is_open)  # pylint: disable=W0212
         with self.assertRaises(SerialException):
             ds_instance.read(rand_write_len2)
-        self.assertFalse(ds_instance._isOpen)  # pylint: disable=W0212
+        self.assertFalse(ds_instance.is_open)  # pylint: disable=W0212
 
     def test_repr_port(self):
         """Tests describing a Dummy Serial port."""
@@ -151,13 +151,13 @@ class DummySerialTest(unittest.TestCase):  # pylint: disable=R0904
             ds_responses={rand_write_str1: rand_write_str2}
         )
 
-        self.assertTrue(ds_instance._isOpen)  # pylint: disable=W0212
+        self.assertTrue(ds_instance.is_open)  # pylint: disable=W0212
         with self.assertRaises(SerialException):
             ds_instance.open()
         ds_instance.close()
-        self.assertFalse(ds_instance._isOpen)  # pylint: disable=W0212
+        self.assertFalse(ds_instance.is_open)  # pylint: disable=W0212
         ds_instance.open()
-        self.assertTrue(ds_instance._isOpen)  # pylint: disable=W0212
+        self.assertTrue(ds_instance.is_open)  # pylint: disable=W0212
 
     def test_close(self):
         """Tests closing a Dummy Serial port."""
@@ -172,9 +172,9 @@ class DummySerialTest(unittest.TestCase):  # pylint: disable=R0904
             ds_responses={rand_write_str1: rand_write_str2}
         )
 
-        self.assertTrue(ds_instance._isOpen)  # pylint: disable=W0212
+        self.assertTrue(ds_instance.is_open)  # pylint: disable=W0212
         self.assertFalse(ds_instance.close())
-        self.assertFalse(ds_instance._isOpen)  # pylint: disable=W0212
+        self.assertFalse(ds_instance.is_open)  # pylint: disable=W0212
 
     def test_write_and_read_no_data_present(self):  # pylint: disable=C0103
         """Tests writing and reading with an unspecified response."""

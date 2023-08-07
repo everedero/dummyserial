@@ -46,7 +46,7 @@ class Serial(object):
         self._logger.debug('args=%s', args)
         self._logger.debug('kwargs=%s', kwargs)
 
-        self._isOpen = True  # pylint: disable=C0103
+        self.is_open = True
         self._waiting_data = dummyserial.constants.NO_DATA_PRESENT
 
         self.port = kwargs['port']  # Serial port name.
@@ -66,7 +66,7 @@ class Serial(object):
                 self.__module__,
                 self.__class__.__name__,
                 id(self),
-                self._isOpen,
+                self.is_open,
                 self.port,
                 self.timeout,
                 self._waiting_data,
@@ -77,17 +77,17 @@ class Serial(object):
         """Open a (previously initialized) port."""
         self._logger.debug('Opening port')
 
-        if self._isOpen:
+        if self.is_open:
             raise SerialException('Port is already open.')
 
-        self._isOpen = True
+        self.is_open = True
         self.port = self.initial_port_name
 
     def close(self):
         """Close a port on dummy_serial."""
         self._logger.debug('Closing port')
-        if self._isOpen:
-            self._isOpen = False
+        if self.is_open:
+            self.is_open = False
         self.port = None
 
     def write(self, data):
@@ -104,7 +104,7 @@ class Serial(object):
         """
         self._logger.debug('Writing (%s): "%s"', len(data), data)
 
-        if not self._isOpen:
+        if not self.is_open:
             raise PortNotOpenError
 
         if sys.version_info[0] > 2:
@@ -138,7 +138,7 @@ class Serial(object):
         """
         self._logger.debug('Reading %s bytes.', size)
 
-        if not self._isOpen:
+        if not self.is_open:
             raise PortNotOpenError
 
         if size < 0:
@@ -188,5 +188,8 @@ class Serial(object):
     def out_waiting(self):  # pylint: disable=C0103
         """Returns length of waiting output data."""
         return len(self._waiting_data)
+    
+    def isOpen(self):
+        return self.is_open
 
     outWaiting = out_waiting  # pyserial 2.7 / 3.0 compat.
