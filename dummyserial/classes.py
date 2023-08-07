@@ -17,7 +17,7 @@ __license__ = 'Apache License, Version 2.0'
 __copyright__ = 'Copyright 2016 Orion Labs, Inc.'
 
 
-class Serial(object):
+class Serial():
     """
     Dummy (mock) serial port for testing purposes.
 
@@ -61,16 +61,13 @@ class Serial(object):
     def __repr__(self):
         """String representation of the DummySerial object."""
         return (
-            "{0}.{1}<id=0x{2:x}, open={3}>(port={4!r}, timeout={5!r}, "
-            "waiting_data={6!r})".format(
-                self.__module__,
-                self.__class__.__name__,
-                id(self),
-                self.is_open,
-                self.port,
-                self.timeout,
-                self._waiting_data,
-            )
+            f"{self.__module__}."
+            f"{self.__class__.__name__}"
+            f"<id=0x{id(self):x}, "
+            f"open={self.is_open}"
+            f">(port={self.port}, "
+            f"timeout={self.timeout}, "
+            f"waiting_data={self._waiting_data})"
         )
 
     def open(self):
@@ -143,8 +140,8 @@ class Serial(object):
 
         if size < 0:
             raise dummyserial.exceptions.DSIOError(
-                'The size to read must not be negative. ' +
-                'Given: {!r}'.format(size))
+                ('The size to read must not be negative. '
+                f'Given: {size}'))
 
         # Do the actual reading from the waiting data, and simulate the
         # influence of size.
@@ -182,14 +179,14 @@ class Serial(object):
 
         if sys.version_info[0] > 2:  # Convert types to make it python3 compat.
             return bytes(return_str, encoding='latin1')
-        else:
-            return return_str
+        return return_str
 
     def out_waiting(self):  # pylint: disable=C0103
         """Returns length of waiting output data."""
         return len(self._waiting_data)
-    
-    def isOpen(self):
+
+    def isOpen(self):  # pylint: disable=C0103
+        """Return wheather or not the connection is open"""
         return self.is_open
 
     outWaiting = out_waiting  # pyserial 2.7 / 3.0 compat.
