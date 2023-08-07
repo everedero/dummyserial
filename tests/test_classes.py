@@ -41,7 +41,7 @@ class DummySerialTest(unittest.TestCase):  # pylint: disable=R0904
         :type alphabet: str
         """
         alphabet = alphabet or constants.ALPHANUM
-        return ''.join(random.choice(alphabet) for _ in xrange(length))
+        return ''.join(random.choice(alphabet) for _ in range(length))
 
     def setUp(self):  # pylint: disable=C0103
         """
