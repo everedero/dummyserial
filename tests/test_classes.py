@@ -71,11 +71,11 @@ class DummySerialTest(unittest.TestCase):  # pylint: disable=R0904
             ds_responses={rand_write_str1: rand_write_str2}
         )
 
-        ds_instance.write(rand_write_str1)
+        ds_instance.write(str.encode(rand_write_str1))
 
         read_data = ''
         while 1:
-            read_data = ''.join([read_data, ds_instance.read(rand_write_len2)])
+            read_data = ''.join([read_data, ds_instance.read(rand_write_len2).decode()])
             waiting_data = ds_instance.outWaiting()
             if not waiting_data:
                 break
@@ -116,7 +116,7 @@ class DummySerialTest(unittest.TestCase):  # pylint: disable=R0904
         )
 
         self.assertTrue(ds_instance._isOpen)  # pylint: disable=W0212
-        ds_instance.write(rand_write_str1)
+        ds_instance.write(str.encode(rand_write_str1))
         ds_instance.close()
         self.assertFalse(ds_instance._isOpen)  # pylint: disable=W0212
         with self.assertRaises(SerialException):
@@ -187,11 +187,11 @@ class DummySerialTest(unittest.TestCase):  # pylint: disable=R0904
             baudrate=self.random_baudrate
         )
 
-        ds_instance.write(rand_write_str1)
+        ds_instance.write(str.encode(rand_write_str1))
 
         read_data = ''
         while 1:
-            read_data = ''.join([read_data, ds_instance.read(rand_write_len2)])
+            read_data = ''.join([read_data, ds_instance.read(rand_write_len2).decode()])
             waiting_data = ds_instance.outWaiting()
             if not waiting_data:
                 break
