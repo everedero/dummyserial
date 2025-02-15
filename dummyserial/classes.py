@@ -49,14 +49,26 @@ class Serial():
         self.is_open = True
         self._waiting_data = dummyserial.constants.NO_DATA_PRESENT
 
-        self.port = kwargs['port']  # Serial port name.
+        self.port = kwargs.get('port', None)
+        if self.port == None and len(args) > 0:
+            self.port = args[0]
+        else:
+            raise IOError("No port provided")
+
+        self.baudrate = kwargs.get('baudrate', None)
+        if self.baudrate == None and len(args) > 1:
+            self.baudrate = args[1]
+        else:
+            self._logger.debug('No baudrate provided, using default')
+            self.baudrate = dummyserial.constants.DEFAULT_BAUDRATE
+
         self.initial_port_name = self.port  # Initial name given to the port
 
-        self.ds_responses = kwargs.get('ds_responses', {})
+#        self.ds_responses = kwargs.get('ds_responses', {})
+        self.ds_responses = {"Hi!": "Hello!", "Goodbye": "Bye"} 
         self.timeout = kwargs.get(
             'timeout', dummyserial.constants.DEFAULT_TIMEOUT)
-        self.baudrate = kwargs.get(
-            'baudrate', dummyserial.constants.DEFAULT_BAUDRATE)
+        self.writeTimeout = self.timeout
 
     def __repr__(self):
         """String representation of the DummySerial object."""
@@ -188,5 +200,14 @@ class Serial():
     def isOpen(self):  # pylint: disable=C0103
         """Return wheather or not the connection is open"""
         return self.is_open
+
+    def flushInput(self):
+        """Flushes input"""
+        self._logger.debug("Input flush")
+
+    def flushOutput(self):
+        """Flushes output"""
+        self._logger.debug("Output flush")
+        self._waiting_data = dummyserial.constants.NO_DATA_PRESENT
 
     outWaiting = out_waiting  # pyserial 2.7 / 3.0 compat.
