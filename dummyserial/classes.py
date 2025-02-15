@@ -213,9 +213,48 @@ class Serial():
         """Flushes input"""
         self._logger.debug("Input flush")
 
+    def flush(self):
+        """Flushes input and output"""
+        self._logger.debug("Complete flush")
+        self._waiting_data = dummyserial.constants.NO_DATA_PRESENT
+
     def flushOutput(self):
         """Flushes output"""
         self._logger.debug("Output flush")
         self._waiting_data = dummyserial.constants.NO_DATA_PRESENT
+
+    def fileno(self):
+        self._logger.warn("fileno is used but is not multiplatform")
+        return 1
+
+    def inWaiting(self):
+        """
+        Always instant because the module is fake
+        """
+        return False
+
+    def readline(self, size=None):
+        """
+        Read until b'\n'.
+        Older version have a size arguments but that is wrong
+        """
+        if size != None:
+            self._logger.warn("readline should not have an argument")
+            return(self.read(size))
+
+        stop = False
+        bstr = b''
+        self._logger.setLevel(logging.WARN)
+        while not stop:
+            char = self.read(1)
+            if char == b'\n':
+                stop = True
+            else:
+                bstr += char
+        self._logger.setLevel(logging.DEBUG)
+        self._logger.debug(
+            'Readline: "%s"',
+            bstr)
+        return(bstr)
 
     outWaiting = out_waiting  # pyserial 2.7 / 3.0 compat.
