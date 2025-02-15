@@ -39,7 +39,7 @@ setuptools.setup(
     packages=['dummyserial'],
     package_data={'': ['LICENSE']},
     license=open('LICENSE').read(),
-    long_description=open('README.rst').read(),
+    long_description=open('README.md').read(),
     url='https://github.com/ampledata/dummyserial',
     setup_requires=['coverage >= 3.7.1', 'nose >= 1.3.7'],
     install_requires=['pyserial >= 2.7'],
