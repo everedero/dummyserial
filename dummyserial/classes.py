@@ -11,6 +11,7 @@ import time
 from serial import SerialException, PortNotOpenError
 
 import dummyserial.constants
+import dummyserial.lookup as lookup
 
 __author__ = 'Greg Albrecht <gba@orionlabs.io>'
 __license__ = 'Apache License, Version 2.0'
@@ -64,8 +65,9 @@ class Serial():
 
         self.initial_port_name = self.port  # Initial name given to the port
 
-#        self.ds_responses = kwargs.get('ds_responses', {})
-        self.ds_responses = {"Hi!": "Hello!", "Goodbye": "Bye"} 
+        self.lookup = kwargs.get(
+            'lookup', lookup.default)
+        self.lookup_func = lookup.default
         self.timeout = kwargs.get(
             'timeout', dummyserial.constants.DEFAULT_TIMEOUT)
         self.writeTimeout = self.timeout
@@ -126,8 +128,7 @@ class Serial():
 
         # Look up which data that should be waiting for subsequent read
         # commands.
-        self._waiting_data = self.ds_responses.get(
-            input_str, dummyserial.constants.NO_DATA_PRESENT)
+        self._waiting_data = self.lookup_func(input_str, dummyserial.constants.DEFAULT_RESPONSE)
 
     def read(self, size=1):
         """
@@ -190,7 +191,14 @@ class Serial():
         )
 
         if sys.version_info[0] > 2:  # Convert types to make it python3 compat.
-            return bytes(return_str, encoding='latin1')
+            if type(return_str) == str:
+                return bytes(return_str, encoding='latin1')
+            elif type(return_str) == bytes:
+                return(return_str)
+            else:
+                print(type(return_str))
+                print(return_str)
+                raise IOError("Invalid return type in lookup func")
         return return_str
 
     def out_waiting(self):  # pylint: disable=C0103
