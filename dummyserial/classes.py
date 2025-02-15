@@ -49,18 +49,18 @@ class Serial():
         self.is_open = True
         self._waiting_data = dummyserial.constants.NO_DATA_PRESENT
 
-        self.port = kwargs.get('port', None)
-        if self.port == None and len(args) > 0:
+        self.baudrate = kwargs.get("baudrate") # None if key not found
+        if (self.baudrate == None and len(args) > 1):
+            self.baudrate = args[1]
+        else:
+            self._logger.warn('No baudrate provided, using default')
+            self.baudrate = dummyserial.constants.DEFAULT_BAUDRATE
+
+        self.port = kwargs.get("port")
+        if (self.port == None and len(args) > 0):
             self.port = args[0]
         else:
             raise IOError("No port provided")
-
-        self.baudrate = kwargs.get('baudrate', None)
-        if self.baudrate == None and len(args) > 1:
-            self.baudrate = args[1]
-        else:
-            self._logger.debug('No baudrate provided, using default')
-            self.baudrate = dummyserial.constants.DEFAULT_BAUDRATE
 
         self.initial_port_name = self.port  # Initial name given to the port
 
