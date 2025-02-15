@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 """Tests for Dummy Serial Classes."""
@@ -10,8 +10,8 @@ import logging.handlers
 
 from serial.serialutil import SerialException
 
-from . import constants
-from .context import dummyserial
+import constants
+from context import dummyserial
 
 __author__ = 'Greg Albrecht <gba@orionlabs.io>'
 __license__ = 'Apache License, Version 2.0'
